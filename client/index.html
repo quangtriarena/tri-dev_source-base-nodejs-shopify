@@ -39,10 +39,13 @@
 						formData.append("files", selectedFiles[i]);
 					}
 
-					const response = fetch("https://arena-app-tt.ap.ngrok.io/app/v1/upload/multi", {
-						method: "POST",
-						body: formData,
-					})
+					const response = fetch(
+						"https://arena-app-tt.ap.ngrok.io/app/v1/upload/single",
+						{
+							method: "POST",
+							body: formData,
+						}
+					)
 						.then((_res) => {
 							_res.json();
 						})

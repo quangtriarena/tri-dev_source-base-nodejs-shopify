@@ -1,10 +1,13 @@
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
+import morgan from "morgan";
 import AdminRoutes from "./routes/index.js";
 
 const PORT = 3333;
 const app = express();
+
+app.use(morgan("dev"));
 
 app.use(
 	cors({
