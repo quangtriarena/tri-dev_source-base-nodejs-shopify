@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0" />
+		<title>Upload Image</title>
+	</head>
+	<body>
+		<h1>Upload Image</h1>
+		<form
+			id="uploadForm"
+			method="post"
+			action="/">
+			<input
+				multiple
+				type="file"
+				name="image"
+				id="imageInput"
+				accept="image/*"
+				required />
+
+			<button type="button">Submit</button>
+		</form>
+
+		<script>
+			document
+				.querySelector("#uploadForm button")
+				.addEventListener("click", function (event) {
+					event.preventDefault();
+					event.stopPropagation();
+
+					const selectedFiles = document.getElementById("imageInput").files;
+
+					const formData = new FormData();
+
+					for (let i = 0; i < selectedFiles.length; i++) {
+						formData.append("files", selectedFiles[i]);
+					}
+
+					const response = fetch("https://arena-app-tt.ap.ngrok.io/app/v1/upload/multi", {
+						method: "POST",
+						body: formData,
+					})
+						.then((_res) => {
+							_res.json();
+						})
+						.then((_data) => _data)
+						.catch((error) => {
+							console.log("error", error);
+						});
+				});
+		</script>
+	</body>
+</html>
