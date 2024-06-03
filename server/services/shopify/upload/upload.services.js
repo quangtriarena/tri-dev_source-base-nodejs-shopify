@@ -163,13 +163,12 @@ const UploadServices = {
 							},
 						}),
 					});
-					//#endregion
 
-					let stageTarget = uploadImageResponse.data.stagedUploadsCreate.stagedTargets[0];
+					const stageTarget =
+						uploadImageResponse.data.stagedUploadsCreate.stagedTargets[0];
 					const params = stageTarget.parameters;
 					const url = stageTarget.url;
 
-					//#region [step 2: convert to form data and upload object file to server google cloud]
 					const formData = new FormData();
 					params.forEach((param) => {
 						formData.append(param.name, param.value);
@@ -184,11 +183,9 @@ const UploadServices = {
 							...formData.getHeaders(),
 						},
 					});
-					//#endregion
 
 					const resourceUrl = stageTarget.resourceUrl;
 
-					//#region [step 3: upload to shopify]
 					const _res = await AxiosServer({
 						data: JSON.stringify({
 							query: `mutation fileCreate($files: [FileCreateInput!]!) {
@@ -219,8 +216,7 @@ const UploadServices = {
 										message
 									}
 								}
-							}
-							`,
+							}`,
 							variables: {
 								files: [
 									{
@@ -233,7 +229,6 @@ const UploadServices = {
 						}),
 					});
 
-					//#endregion
 					console.log("_res.data", _res.data.fileCreate.files);
 				}, i * 100);
 			}
@@ -241,7 +236,6 @@ const UploadServices = {
 			return { message: "Upload success" };
 		} catch (error) {
 			console.log("UploadServices multi error", error);
-
 			throw error;
 		}
 	},
