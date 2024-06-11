@@ -126,49 +126,50 @@ const UploadServices = {
 
 	multi: async (files) => {
 		try {
-			//#region [step 1: register upload]
-			const uploadImageResponse = await AxiosServer({
-				data: JSON.stringify({
-					query: `mutation stagedUploadsCreate($input: [StagedUploadInput!]!) {
-							stagedUploadsCreate(
-								input:$input
-							) {
-								stagedTargets {
-									url
-									resourceUrl
-									parameters {
-										name
-										value
-									}
-								}
-								userErrors {
-									field
-									message
-								}
-							}
-						}
-						`,
-					variables: {
-						input: files.map((file) => ({
-							filename: file.originalname,
-							mimeType: file.mimetype,
-							resource: "FILE",
-							httpMethod: "POST",
-						})),
-					},
-				}),
-			});
-
-			const stageTarget = uploadImageResponse.data.stagedUploadsCreate.stagedTargets[0];
-			const params = stageTarget.parameters;
-			const url = stageTarget.url;
-
 			return await new Promise((resolve, reject) => {
 				let countTask = files.length;
 
 				for (let i = 0; i < files.length; i++) {
 					setTimeout(async () => {
 						let file = files[i];
+
+						//#region [step 1: register upload]
+						const uploadImageResponse = await AxiosServer({
+							data: JSON.stringify({
+								query: `mutation stagedUploadsCreate($input: [StagedUploadInput!]!) {
+										stagedUploadsCreate(
+											input:$input
+										) {
+											stagedTargets {
+												url
+												resourceUrl
+												parameters {
+													name
+													value
+												}
+											}
+											userErrors {
+												field
+												message
+											}
+										}
+									}
+									`,
+								variables: {
+									input: {
+										filename: file.originalname,
+										mimeType: file.mimetype,
+										resource: "IMAGE",
+										httpMethod: "POST",
+									},
+								},
+							}),
+						});
+
+						const stageTarget =
+							uploadImageResponse.data.stagedUploadsCreate.stagedTargets[0];
+						const params = stageTarget.parameters;
+						const url = stageTarget.url;
 
 						const formData = new FormData();
 						params.forEach((param) => {
