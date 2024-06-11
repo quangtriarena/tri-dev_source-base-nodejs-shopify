@@ -6,7 +6,7 @@ import cors from "cors";
 import express from "express";
 import AdminRoutes from "./routes/index.js";
 import redisClient from "./configs/redisConfig.js";
-import { morganMiddleware } from "./middlewares/morganMiddleware.js";
+import { morganMiddleware } from "./utils/morganMiddleware.js";
 
 //#region [test redis]
 redisClient.set("test-redis", "Redis online ne !!!", (err, reply) => {
