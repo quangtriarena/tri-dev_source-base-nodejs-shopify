@@ -1,17 +1,20 @@
-import axios from "axios";
-import dotenv from "dotenv";
-dotenv.config();
-
-const API_VER = "2024-04";
-const SHOP_URL = "49-tri-personalize.myshopify.com";
-const ACCESS_TOKEN = process.env.ACCESS_TOKEN_APP_DEV;
+import axiosServer from "../../../configs/axiosConfig.js";
 
 const MetafieldServices = {
 	app: {
 		getOwnerId: async () => {},
 	},
 	definition: {
-		createMetafieldDefinition: async () => {
+		createMetafieldDefinition: async ({
+			payload,
+			ownerType,
+			namespace,
+			key,
+			access,
+			name,
+			type,
+			description,
+		}) => {
 			try {
 				const query = {
 					query: `mutation CreateMetafieldDefinition($definition: MetafieldDefinitionInput!) {
@@ -37,31 +40,24 @@ const MetafieldServices = {
 					`,
 					variables: {
 						definition: {
-							name: "Personalize",
-							namespace: "$app:sb_",
-							key: "personalize",
-							description: "Definition of personalize metafield with product",
-							type: "boolean",
-							ownerType: "PRODUCT",
+							name,
+							namespace,
+							key,
+							description,
+							type,
+							ownerType,
 							access: {
-								admin: "MERCHANT_READ_WRITE",
-								storefront: "PUBLIC_READ",
+								...access,
 							},
 						},
 					},
 				};
 
-				const _res = await axios({
-					method: "post",
-					url: `https://${SHOP_URL}/admin/api/${API_VER}/graphql.json`,
-					headers: {
-						"X-Shopify-Access-Token": ACCESS_TOKEN,
-						"Content-Type": "application/json",
-					},
+				const _res = await axiosServer({
 					data: JSON.stringify(query),
 				});
 
-				return _res.data.data.metafieldDefinitionCreate.createdDefinition;
+				return _res;
 			} catch (error) {
 				console.log("CreateMetafieldDefinition error", error);
 
@@ -69,11 +65,11 @@ const MetafieldServices = {
 			}
 		},
 
-		getAllMetafieldDefinitions: async () => {
+		getAllMetafieldDefinitions: async ({ query, ownerType }) => {
 			try {
 				const query = {
 					query: `query {
-					metafieldDefinitions(first: 250, ownerType: PRODUCT) {
+					metafieldDefinitions(first: 250, ownerType: ${ownerType}) {
 						edges {
 							node {
 								id
@@ -92,17 +88,11 @@ const MetafieldServices = {
 				`,
 				};
 
-				const _res = await axios({
-					method: "post",
-					url: `https://${SHOP_URL}/admin/api/${API_VER}/graphql.json`,
-					headers: {
-						"X-Shopify-Access-Token": ACCESS_TOKEN,
-						"Content-Type": "application/json",
-					},
+				const _res = await axiosServer({
 					data: JSON.stringify(query),
 				});
 
-				return _res.data;
+				return _res;
 			} catch (error) {
 				console.log("getAllMetafieldDefinitions error", error);
 
@@ -113,25 +103,17 @@ const MetafieldServices = {
 		getByIdMetafieldDefinition: async (id) => {
 			try {
 				const query = {
-					query: `metafieldDefinition(
-					id: "gid://shopify/MetafieldDefinition/${id}"
-				  ) {
-					name;
-				  },
-				`,
+					query: `metafieldDefinition(id: "gid://shopify/MetafieldDefinition/${id}") {
+							name;
+						},
+					`,
 				};
 
-				const _res = await axios({
-					method: "post",
-					url: `https://${SHOP_URL}/admin/api/${API_VER}/graphql.json`,
-					headers: {
-						"X-Shopify-Access-Token": ACCESS_TOKEN,
-						"Content-Type": "application/json",
-					},
+				const _res = await axiosServer({
 					data: JSON.stringify(query),
 				});
 
-				return _res.data;
+				return _res;
 			} catch (error) {
 				console.log("findByIdMetafieldDefinition error", error);
 
@@ -158,17 +140,11 @@ const MetafieldServices = {
 					`,
 				};
 
-				const _res = await axios({
-					method: "post",
-					url: `https://${SHOP_URL}/admin/api/${API_VER}/graphql.json`,
-					headers: {
-						"X-Shopify-Access-Token": ACCESS_TOKEN,
-						"Content-Type": "application/json",
-					},
+				const _res = await axiosServer({
 					data: JSON.stringify(query),
 				});
 
-				return _res.data.data.metafieldDefinitions.nodes.find(
+				return _res.data.metafieldDefinitions.nodes.find(
 					(_item) => _item.name === "Personalize" && _item.namespace.includes("sb_")
 				);
 			} catch (error) {
@@ -214,17 +190,11 @@ const MetafieldServices = {
 					},
 				};
 
-				const _res = await axios({
-					method: "post",
-					url: `https://${SHOP_URL}/admin/api/${API_VER}/graphql.json`,
-					headers: {
-						"X-Shopify-Access-Token": ACCESS_TOKEN,
-						"Content-Type": "application/json",
-					},
+				const _res = await axiosServer({
 					data: JSON.stringify(query),
 				});
 
-				return _res.data;
+				return _res;
 			} catch (error) {
 				console.log("updateMetafieldDefinition error", error);
 
@@ -252,17 +222,11 @@ const MetafieldServices = {
 					},
 				};
 
-				const _res = await axios({
-					method: "post",
-					url: `https://${SHOP_URL}/admin/api/${API_VER}/graphql.json`,
-					headers: {
-						"X-Shopify-Access-Token": ACCESS_TOKEN,
-						"Content-Type": "application/json",
-					},
+				const _res = await axiosServer({
 					data: JSON.stringify(query),
 				});
 
-				return _res.data;
+				return _res;
 			} catch (error) {
 				console.log("deleteMetafieldDefinition error", error);
 
@@ -305,17 +269,11 @@ const MetafieldServices = {
 					},
 				};
 
-				const _res = await axios({
-					method: "post",
-					url: `https://${SHOP_URL}/admin/api/${API_VER}/graphql.json`,
-					headers: {
-						"X-Shopify-Access-Token": ACCESS_TOKEN,
-						"Content-Type": "application/json",
-					},
+				const _res = await axiosServer({
 					data: JSON.stringify(query),
 				});
 
-				return _res.data;
+				return _res;
 			} catch (error) {
 				console.log("setValueMetafieldDefinition error", error);
 

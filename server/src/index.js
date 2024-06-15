@@ -7,6 +7,8 @@ import express from "express";
 import AdminRoutes from "./routes/index.js";
 import redisClient from "./configs/redisConfig.js";
 import { morganMiddleware } from "./utils/morganMiddleware.js";
+import "./configs/databaseConfig.js";
+import "./models/index.js";
 
 //#region [test redis]
 redisClient.set("test-redis", "Redis online ne !!!", (err, reply) => {

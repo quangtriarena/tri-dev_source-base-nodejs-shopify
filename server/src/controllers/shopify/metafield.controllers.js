@@ -5,9 +5,19 @@ const MetafieldControllers = {
 	definition: {
 		create: async (req, res) => {
 			try {
-				const _data = await MetafieldServices.definition.createMetafieldDefinition(
-					req.body
-				);
+				const _data = await MetafieldServices.definition.createMetafieldDefinition({
+					payload: req.body,
+					type: "boolean",
+					name: "Test",
+					ownerType: "PRODUCT",
+					namespace: "app:t_", // cái này cần phải cài app mới được
+					key: "test",
+					description: "Definition of test metafield with product",
+					access: {
+						admin: "MERCHANT_READ_WRITE",
+						storefront: "PUBLIC_READ",
+					},
+				});
 
 				return res.status(200).json(_data);
 			} catch (error) {
@@ -21,7 +31,10 @@ const MetafieldControllers = {
 			try {
 				let query = req.query;
 
-				const _data = await MetafieldServices.definition.getAllMetafieldDefinitions(query);
+				const _data = await MetafieldServices.definition.getAllMetafieldDefinitions({
+					query,
+					ownerType: "PRODUCT",
+				});
 
 				return res.status(200).json(_data);
 			} catch (error) {
@@ -34,8 +47,6 @@ const MetafieldControllers = {
 		findById: async (req, res) => {
 			try {
 				const { id } = req.params;
-
-				console.log("id", id);
 
 				const _data = await MetafieldServices.definition.getByIdMetafieldDefinition(id);
 

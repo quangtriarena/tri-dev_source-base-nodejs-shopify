@@ -1,5 +1,5 @@
 import express from "express";
-import MetafieldControllers from "../../../controllers/shopify/metafield.controller.js";
+import MetafieldControllers from "../../../controllers/shopify/metafield.controllers.js";
 
 const router = express.Router();
 
