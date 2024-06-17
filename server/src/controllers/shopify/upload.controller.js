@@ -1,4 +1,5 @@
 import UploadServices from '../../services/shopify/upload/upload.services.js'
+import ResponseHandler from '../../utils/responseHandler.js'
 
 const UploadControllers = {
     single: async (req, res) => {
@@ -10,13 +11,14 @@ const UploadControllers = {
             }
 
             const _result = await UploadServices.single(file)
-            console.log('_result', _result)
 
-            return res.status(200).json({ message: 'Upload success' })
+            return ResponseHandler.success({ res, data: _result, message: 'Upload success' })
         } catch (error) {
             console.log('UploadControllers single error', error)
+            return ResponseHandler.error({ res, error, message: 'Upload error' })
         }
     },
+
     multi: async (req, res) => {
         try {
             const files = req.files
@@ -28,9 +30,10 @@ const UploadControllers = {
             const _result = await UploadServices.multi(files)
             console.log('_result', _result)
 
-            return res.status(200).json({ message: 'Upload success' })
+            return ResponseHandler.success({ res, data: _result, message: 'Upload success' })
         } catch (error) {
             console.log('UploadControllers multi error', error)
+            return ResponseHandler.error({ res, error, message: 'Upload error' })
         }
     },
 }

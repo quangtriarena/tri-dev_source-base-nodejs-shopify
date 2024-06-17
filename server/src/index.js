@@ -6,7 +6,7 @@ import path from 'path'
 import './configs/databaseConfig.js'
 import redisClient from './configs/redisConfig.js'
 import './models/index.js'
-import AdminRoutes from './routes/index.js'
+import ROUTER from './routes/index.js'
 import { morganMiddleware } from './utils/morganMiddleware.js'
 
 //#region [Load the appropriate .env file based on NODE_ENV]
@@ -45,7 +45,8 @@ app.get('/', (req, res) => {
 //#endregion
 
 //#region [ROUTES]
-app.use('/app/admin', AdminRoutes)
+app.use('/app/admin', ROUTER.AdminRoutes)
+app.use('/app/external', ROUTER.ExternalRoutes)
 //#endregion
 
 app.listen(PORT, () => {
