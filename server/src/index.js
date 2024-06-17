@@ -7,8 +7,12 @@ import express from "express";
 import AdminRoutes from "./routes/index.js";
 import redisClient from "./configs/redisConfig.js";
 import { morganMiddleware } from "./utils/morganMiddleware.js";
+import path from "path";
 import "./configs/databaseConfig.js";
 import "./models/index.js";
+
+const PORT = process.env.SERVER_PORT || 3333;
+const app = express();
 
 //#region [test redis]
 redisClient.set("test-redis", "Redis online ne !!!", (err, reply) => {
@@ -20,11 +24,8 @@ redisClient.set("test-redis", "Redis online ne !!!", (err, reply) => {
 });
 //#endregion
 
-const PORT = process.env.SERVER_PORT || 3333;
-const app = express();
-
+app.use("/static", express.static(path.join(process.cwd(), "public")));
 app.use(morganMiddleware);
-
 app.use(
 	cors({
 		origin: "*",
