@@ -1,15 +1,15 @@
-import express from "express";
-import MetafieldControllers from "../../../controllers/shopify/metafield.controllers.js";
+import express from 'express'
+import MetafieldControllers from '../../../controllers/shopify/metafield.controllers.js'
 
-const router = express.Router();
+const router = express.Router()
 
 //#region [definition]
-router.get("/", MetafieldControllers.definition.findAll);
-router.get("/:id", MetafieldControllers.definition.findById);
-router.post("/", MetafieldControllers.definition.create);
-router.post("/:id", MetafieldControllers.definition.update);
-router.delete("/:id", MetafieldControllers.definition.delete);
-router.post("/:id/set-value", MetafieldControllers.definition.setValue);
+router.get('/', MetafieldControllers.definition.findAll)
+router.get('/:id', MetafieldControllers.definition.findById)
+router.post('/', MetafieldControllers.definition.create)
+router.post('/:id', MetafieldControllers.definition.update)
+router.delete('/:id', MetafieldControllers.definition.delete)
+router.post('/:id/set-value', MetafieldControllers.definition.setValue)
 //#endregion
 
 //#region [app]
@@ -26,4 +26,4 @@ router.post("/:id/set-value", MetafieldControllers.definition.setValue);
 
 // ...
 
-export default router;
+export default router

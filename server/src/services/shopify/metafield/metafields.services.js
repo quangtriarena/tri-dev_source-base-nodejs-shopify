@@ -1,23 +1,23 @@
-import axiosServer from "../../../configs/axiosConfig.js";
+import axiosServer from '../../../configs/axiosConfig.js'
 
 const MetafieldServices = {
-	app: {
-		getOwnerId: async () => {},
-	},
-	definition: {
-		createMetafieldDefinition: async ({
-			payload,
-			ownerType,
-			namespace,
-			key,
-			access,
-			name,
-			type,
-			description,
-		}) => {
-			try {
-				const query = {
-					query: `mutation CreateMetafieldDefinition($definition: MetafieldDefinitionInput!) {
+    app: {
+        getOwnerId: async () => {},
+    },
+    definition: {
+        createMetafieldDefinition: async ({
+            payload,
+            ownerType,
+            namespace,
+            key,
+            access,
+            name,
+            type,
+            description,
+        }) => {
+            try {
+                const query = {
+                    query: `mutation CreateMetafieldDefinition($definition: MetafieldDefinitionInput!) {
 							metafieldDefinitionCreate(definition: $definition) {
 								createdDefinition {
 								id
@@ -38,37 +38,37 @@ const MetafieldServices = {
 							}
 					}
 					`,
-					variables: {
-						definition: {
-							name,
-							namespace,
-							key,
-							description,
-							type,
-							ownerType,
-							access: {
-								...access,
-							},
-						},
-					},
-				};
+                    variables: {
+                        definition: {
+                            name,
+                            namespace,
+                            key,
+                            description,
+                            type,
+                            ownerType,
+                            access: {
+                                ...access,
+                            },
+                        },
+                    },
+                }
 
-				const _res = await axiosServer({
-					data: JSON.stringify(query),
-				});
+                const _res = await axiosServer({
+                    data: JSON.stringify(query),
+                })
 
-				return _res;
-			} catch (error) {
-				console.log("CreateMetafieldDefinition error", error);
+                return _res
+            } catch (error) {
+                console.log('CreateMetafieldDefinition error', error)
 
-				throw error;
-			}
-		},
+                throw error
+            }
+        },
 
-		getAllMetafieldDefinitions: async ({ query, ownerType }) => {
-			try {
-				const query = {
-					query: `query {
+        getAllMetafieldDefinitions: async ({ query, ownerType }) => {
+            try {
+                const query = {
+                    query: `query {
 					metafieldDefinitions(first: 250, ownerType: ${ownerType}) {
 						edges {
 							node {
@@ -86,45 +86,45 @@ const MetafieldServices = {
 					}
 				}
 				`,
-				};
+                }
 
-				const _res = await axiosServer({
-					data: JSON.stringify(query),
-				});
+                const _res = await axiosServer({
+                    data: JSON.stringify(query),
+                })
 
-				return _res;
-			} catch (error) {
-				console.log("getAllMetafieldDefinitions error", error);
+                return _res
+            } catch (error) {
+                console.log('getAllMetafieldDefinitions error', error)
 
-				throw error;
-			}
-		},
+                throw error
+            }
+        },
 
-		getByIdMetafieldDefinition: async (id) => {
-			try {
-				const query = {
-					query: `metafieldDefinition(id: "gid://shopify/MetafieldDefinition/${id}") {
+        getByIdMetafieldDefinition: async (id) => {
+            try {
+                const query = {
+                    query: `metafieldDefinition(id: "gid://shopify/MetafieldDefinition/${id}") {
 							name;
 						},
 					`,
-				};
+                }
 
-				const _res = await axiosServer({
-					data: JSON.stringify(query),
-				});
+                const _res = await axiosServer({
+                    data: JSON.stringify(query),
+                })
 
-				return _res;
-			} catch (error) {
-				console.log("findByIdMetafieldDefinition error", error);
+                return _res
+            } catch (error) {
+                console.log('findByIdMetafieldDefinition error', error)
 
-				throw error;
-			}
-		},
+                throw error
+            }
+        },
 
-		checkAppPrefixMetafield: async () => {
-			try {
-				const query = {
-					query: `query MetafieldDefinitions {
+        checkAppPrefixMetafield: async () => {
+            try {
+                const query = {
+                    query: `query MetafieldDefinitions {
 						metafieldDefinitions(ownerType: PRODUCT, namespace: "$app:sb_", first: 250) {
 							nodes {
 								description
@@ -138,28 +138,28 @@ const MetafieldServices = {
 						}
 					}
 					`,
-				};
+                }
 
-				const _res = await axiosServer({
-					data: JSON.stringify(query),
-				});
+                const _res = await axiosServer({
+                    data: JSON.stringify(query),
+                })
 
-				return _res.data.metafieldDefinitions.nodes.find(
-					(_item) => _item.name === "Personalize" && _item.namespace.includes("sb_")
-				);
-			} catch (error) {
-				console.log("checkAppPrefixMetafield error", error);
+                return _res.data.metafieldDefinitions.nodes.find(
+                    (_item) => _item.name === 'Personalize' && _item.namespace.includes('sb_')
+                )
+            } catch (error) {
+                console.log('checkAppPrefixMetafield error', error)
 
-				throw error;
-			}
-		},
+                throw error
+            }
+        },
 
-		updateMetafieldDefinition: async (metafieldData) => {
-			try {
-				const appPrefix = await MetafieldMiddleware.checkAppPrefixMetafield(ACCESS_TOKEN);
+        updateMetafieldDefinition: async (metafieldData) => {
+            try {
+                const appPrefix = await MetafieldMiddleware.checkAppPrefixMetafield(ACCESS_TOKEN)
 
-				const query = {
-					query: `mutation UpdateMetafieldDefinition($definition: MetafieldDefinitionUpdateInput!) {
+                const query = {
+                    query: `mutation UpdateMetafieldDefinition($definition: MetafieldDefinitionUpdateInput!) {
 					metafieldDefinitionUpdate(definition: $definition) {
 					  updatedDefinition {
 						id
@@ -176,36 +176,36 @@ const MetafieldServices = {
 					  }
 					}
 				  }`,
-					variables: {
-						definition: {
-							name: "Personalize",
-							namespace: appPrefix.namespace,
-							key: appPrefix.key,
-							ownerType: "PRODUCT",
-							access: {
-								admin: "MERCHANT_READ",
-								storefront: "PUBLIC_READ",
-							},
-						},
-					},
-				};
+                    variables: {
+                        definition: {
+                            name: 'Personalize',
+                            namespace: appPrefix.namespace,
+                            key: appPrefix.key,
+                            ownerType: 'PRODUCT',
+                            access: {
+                                admin: 'MERCHANT_READ',
+                                storefront: 'PUBLIC_READ',
+                            },
+                        },
+                    },
+                }
 
-				const _res = await axiosServer({
-					data: JSON.stringify(query),
-				});
+                const _res = await axiosServer({
+                    data: JSON.stringify(query),
+                })
 
-				return _res;
-			} catch (error) {
-				console.log("updateMetafieldDefinition error", error);
+                return _res
+            } catch (error) {
+                console.log('updateMetafieldDefinition error', error)
 
-				throw error;
-			}
-		},
+                throw error
+            }
+        },
 
-		deleteMetafieldDefinition: async (id) => {
-			try {
-				const query = {
-					query: `mutation DeleteMetafieldDefinition($id: ID!, $deleteAllAssociatedMetafields: Boolean!) {
+        deleteMetafieldDefinition: async (id) => {
+            try {
+                const query = {
+                    query: `mutation DeleteMetafieldDefinition($id: ID!, $deleteAllAssociatedMetafields: Boolean!) {
 					metafieldDefinitionDelete(id: $id, deleteAllAssociatedMetafields: $deleteAllAssociatedMetafields) {
 					  deletedDefinitionId
 					  userErrors {
@@ -216,30 +216,30 @@ const MetafieldServices = {
 					}
 				  }
 					`,
-					variables: {
-						id: `gid://shopify/MetafieldDefinition/${id}`,
-						deleteAllAssociatedMetafields: true,
-					},
-				};
+                    variables: {
+                        id: `gid://shopify/MetafieldDefinition/${id}`,
+                        deleteAllAssociatedMetafields: true,
+                    },
+                }
 
-				const _res = await axiosServer({
-					data: JSON.stringify(query),
-				});
+                const _res = await axiosServer({
+                    data: JSON.stringify(query),
+                })
 
-				return _res;
-			} catch (error) {
-				console.log("deleteMetafieldDefinition error", error);
+                return _res
+            } catch (error) {
+                console.log('deleteMetafieldDefinition error', error)
 
-				throw error;
-			}
-		},
+                throw error
+            }
+        },
 
-		setValueMetafieldDefinition: async (id, value) => {
-			try {
-				const appPrefix = await MetafieldMiddleware.checkAppPrefixMetafield();
+        setValueMetafieldDefinition: async (id, value) => {
+            try {
+                const appPrefix = await MetafieldMiddleware.checkAppPrefixMetafield()
 
-				const query = {
-					query: `mutation MetafieldsSet($metafields: [MetafieldsSetInput!]!) {
+                const query = {
+                    query: `mutation MetafieldsSet($metafields: [MetafieldsSetInput!]!) {
 					metafieldsSet(metafields: $metafields) {
 					  metafields {
 						key
@@ -256,37 +256,37 @@ const MetafieldServices = {
 					}
 				  }
 					  `,
-					variables: {
-						metafields: [
-							{
-								key: appPrefix.key,
-								namespace: appPrefix.namespace,
-								ownerId: `gid://shopify/Product/${id}`,
-								type: "boolean",
-								value,
-							},
-						],
-					},
-				};
+                    variables: {
+                        metafields: [
+                            {
+                                key: appPrefix.key,
+                                namespace: appPrefix.namespace,
+                                ownerId: `gid://shopify/Product/${id}`,
+                                type: 'boolean',
+                                value,
+                            },
+                        ],
+                    },
+                }
 
-				const _res = await axiosServer({
-					data: JSON.stringify(query),
-				});
+                const _res = await axiosServer({
+                    data: JSON.stringify(query),
+                })
 
-				return _res;
-			} catch (error) {
-				console.log("setValueMetafieldDefinition error", error);
+                return _res
+            } catch (error) {
+                console.log('setValueMetafieldDefinition error', error)
 
-				throw error;
-			}
-		},
-	},
-	product: {},
-	variant: {},
-	collection: {},
-	customer: {},
-	order: {},
-	webhook: {},
-};
+                throw error
+            }
+        },
+    },
+    product: {},
+    variant: {},
+    collection: {},
+    customer: {},
+    order: {},
+    webhook: {},
+}
 
-export default MetafieldServices;
+export default MetafieldServices

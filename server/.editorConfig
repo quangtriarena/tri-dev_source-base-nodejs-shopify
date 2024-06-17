@@ -1,0 +1,6 @@
+# [*]
+# indent_size = 4
+# indent_style = space
+
+# # Loại trừ tất cả các file .yml
+# !*.yml

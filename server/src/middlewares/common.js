@@ -1,15 +1,15 @@
-import fs from "fs";
+import fs from 'fs'
 
 const MiddlewareCommons = {
-	checkFolderExist: (req, res, next) => {
-		const rootPath = process.cwd();
+    checkFolderExist: (req, res, next) => {
+        const rootPath = process.cwd()
 
-		if (!fs.existsSync(`${rootPath}/temps`)) {
-			fs.mkdirSync(`${rootPath}/temps`);
-		}
+        if (!fs.existsSync(`${rootPath}/temps`)) {
+            fs.mkdirSync(`${rootPath}/temps`)
+        }
 
-		next();
-	},
-};
+        next()
+    },
+}
 
-export default MiddlewareCommons;
+export default MiddlewareCommons

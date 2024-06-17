@@ -1,13 +1,13 @@
-import axios from "axios";
-import FormData from "form-data";
-import fs from "fs";
-import AxiosServer from "../../../configs/axiosConfig.js";
+import axios from 'axios'
+import FormData from 'form-data'
+import fs from 'fs'
+import AxiosServer from '../../../configs/axiosConfig.js'
 
 const UploadServices = {
-	single: async (file) => {
-		try {
-			const queryStagedUploadsCreate = {
-				query: `mutation stagedUploadsCreate($input: [StagedUploadInput!]!) {
+    single: async (file) => {
+        try {
+            const queryStagedUploadsCreate = {
+                query: `mutation stagedUploadsCreate($input: [StagedUploadInput!]!) {
 					stagedUploadsCreate(
 						input:$input
 					) {
@@ -26,50 +26,50 @@ const UploadServices = {
 					}
 				}
 				`,
-				variables: {
-					input: [
-						{
-							filename: file.originalname,
-							mimeType: file.mimetype,
-							resource: "FILE",
-							httpMethod: "POST",
-						},
-					],
-				},
-			};
+                variables: {
+                    input: [
+                        {
+                            filename: file.originalname,
+                            mimeType: file.mimetype,
+                            resource: 'FILE',
+                            httpMethod: 'POST',
+                        },
+                    ],
+                },
+            }
 
-			//#region [step 1: register upload]
-			const uploadImageResponse = await AxiosServer({
-				data: JSON.stringify(queryStagedUploadsCreate),
-			});
-			//#endregion
+            //#region [step 1: register upload]
+            const uploadImageResponse = await AxiosServer({
+                data: JSON.stringify(queryStagedUploadsCreate),
+            })
+            //#endregion
 
-			let stageTarget = uploadImageResponse.data.stagedUploadsCreate.stagedTargets[0];
-			const params = stageTarget.parameters;
-			const url = stageTarget.url;
+            let stageTarget = uploadImageResponse.data.stagedUploadsCreate.stagedTargets[0]
+            const params = stageTarget.parameters
+            const url = stageTarget.url
 
-			//#region [step 2: convert to form data and upload object file to server google cloud]
-			const formData = new FormData();
-			params.forEach((param) => {
-				formData.append(param.name, param.value);
-			});
-			formData.append("file", fs.createReadStream(file.path));
+            //#region [step 2: convert to form data and upload object file to server google cloud]
+            const formData = new FormData()
+            params.forEach((param) => {
+                formData.append(param.name, param.value)
+            })
+            formData.append('file', fs.createReadStream(file.path))
 
-			const uploadResponse = await AxiosServer({
-				method: "POST",
-				url: url,
-				data: formData,
-				headers: {
-					...formData.getHeaders(),
-				},
-			});
-			//#endregion
+            const uploadResponse = await AxiosServer({
+                method: 'POST',
+                url: url,
+                data: formData,
+                headers: {
+                    ...formData.getHeaders(),
+                },
+            })
+            //#endregion
 
-			const resourceUrl = stageTarget.resourceUrl;
+            const resourceUrl = stageTarget.resourceUrl
 
-			//#region [step 3: upload to shopify]
-			const queryFileCreate = {
-				query: `mutation fileCreate($files: [FileCreateInput!]!) {
+            //#region [step 3: upload to shopify]
+            const queryFileCreate = {
+                query: `mutation fileCreate($files: [FileCreateInput!]!) {
 				fileCreate(files: $files) {
 					files {
 						id
@@ -100,43 +100,43 @@ const UploadServices = {
 				}
 			}
 			`,
-				variables: {
-					files: [
-						{
-							filename: file.originalname,
-							contentType: "IMAGE",
-							originalSource: resourceUrl,
-						},
-					],
-				},
-			};
+                variables: {
+                    files: [
+                        {
+                            filename: file.originalname,
+                            contentType: 'IMAGE',
+                            originalSource: resourceUrl,
+                        },
+                    ],
+                },
+            }
 
-			const _res = await AxiosServer({
-				data: JSON.stringify(queryFileCreate),
-			});
-			//#endregion
+            const _res = await AxiosServer({
+                data: JSON.stringify(queryFileCreate),
+            })
+            //#endregion
 
-			return _res.data.fileCreate.files;
-		} catch (error) {
-			console.log("UploadServices single error", error);
+            return _res.data.fileCreate.files
+        } catch (error) {
+            console.log('UploadServices single error', error)
 
-			throw error;
-		}
-	},
+            throw error
+        }
+    },
 
-	multi: async (files) => {
-		try {
-			return await new Promise((resolve, reject) => {
-				let countTask = files.length;
+    multi: async (files) => {
+        try {
+            return await new Promise((resolve, reject) => {
+                let countTask = files.length
 
-				for (let i = 0; i < files.length; i++) {
-					setTimeout(async () => {
-						let file = files[i];
+                for (let i = 0; i < files.length; i++) {
+                    setTimeout(async () => {
+                        let file = files[i]
 
-						//#region [step 1: register upload]
-						const uploadImageResponse = await AxiosServer({
-							data: JSON.stringify({
-								query: `mutation stagedUploadsCreate($input: [StagedUploadInput!]!) {
+                        //#region [step 1: register upload]
+                        const uploadImageResponse = await AxiosServer({
+                            data: JSON.stringify({
+                                query: `mutation stagedUploadsCreate($input: [StagedUploadInput!]!) {
 										stagedUploadsCreate(
 											input:$input
 										) {
@@ -155,42 +155,42 @@ const UploadServices = {
 										}
 									}
 									`,
-								variables: {
-									input: {
-										filename: file.originalname,
-										mimeType: file.mimetype,
-										resource: "IMAGE",
-										httpMethod: "POST",
-									},
-								},
-							}),
-						});
+                                variables: {
+                                    input: {
+                                        filename: file.originalname,
+                                        mimeType: file.mimetype,
+                                        resource: 'IMAGE',
+                                        httpMethod: 'POST',
+                                    },
+                                },
+                            }),
+                        })
 
-						const stageTarget =
-							uploadImageResponse.data.stagedUploadsCreate.stagedTargets[0];
-						const params = stageTarget.parameters;
-						const url = stageTarget.url;
+                        const stageTarget =
+                            uploadImageResponse.data.stagedUploadsCreate.stagedTargets[0]
+                        const params = stageTarget.parameters
+                        const url = stageTarget.url
 
-						const formData = new FormData();
-						params.forEach((param) => {
-							formData.append(param.name, param.value);
-						});
-						formData.append("file", fs.createReadStream(file.path));
+                        const formData = new FormData()
+                        params.forEach((param) => {
+                            formData.append(param.name, param.value)
+                        })
+                        formData.append('file', fs.createReadStream(file.path))
 
-						const uploadResponse = await axios({
-							method: "POST",
-							url: url,
-							data: formData,
-							headers: {
-								...formData.getHeaders(),
-							},
-						});
+                        const uploadResponse = await axios({
+                            method: 'POST',
+                            url: url,
+                            data: formData,
+                            headers: {
+                                ...formData.getHeaders(),
+                            },
+                        })
 
-						const resourceUrl = stageTarget.resourceUrl;
+                        const resourceUrl = stageTarget.resourceUrl
 
-						const _res = await AxiosServer({
-							data: JSON.stringify({
-								query: `mutation fileCreate($files: [FileCreateInput!]!) {
+                        const _res = await AxiosServer({
+                            data: JSON.stringify({
+                                query: `mutation fileCreate($files: [FileCreateInput!]!) {
 										fileCreate(files: $files) {
 											files {
 												alt
@@ -203,32 +203,32 @@ const UploadServices = {
 											}
 										}
 									}`,
-								variables: {
-									files: [
-										{
-											filename: file.originalname,
-											contentType: "IMAGE",
-											originalSource: resourceUrl,
-										},
-									],
-								},
-							}),
-						});
+                                variables: {
+                                    files: [
+                                        {
+                                            filename: file.originalname,
+                                            contentType: 'IMAGE',
+                                            originalSource: resourceUrl,
+                                        },
+                                    ],
+                                },
+                            }),
+                        })
 
-						countTask--;
+                        countTask--
 
-						if (countTask === 0) {
-							console.log("upload multi success");
-							resolve({ message: "Upload success" });
-						}
-					}, i * 100);
-				}
-			});
-		} catch (error) {
-			console.log("UploadServices multi error", error);
-			throw error;
-		}
-	},
-};
+                        if (countTask === 0) {
+                            console.log('upload multi success')
+                            resolve({ message: 'Upload success' })
+                        }
+                    }, i * 100)
+                }
+            })
+        } catch (error) {
+            console.log('UploadServices multi error', error)
+            throw error
+        }
+    },
+}
 
-export default UploadServices;
+export default UploadServices
