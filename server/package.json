@@ -10,7 +10,7 @@
 		"build": "npm run clean && npm run build-babel",
 		"dev": "nodemon --signal SIGINT ./node_modules/.bin/babel-node ./src/index.js",
 		"prod": "cross-env NODE_ENV=production node ./build/src/index.js",
-		"start": "node /src/index.js"
+		"start": "node ./src/index.js"
 	},
 	"keywords": [],
 	"author": "",
