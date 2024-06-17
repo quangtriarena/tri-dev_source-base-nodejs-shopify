@@ -2,8 +2,7 @@ import Redis from "ioredis";
 
 const redisConfig = {
 	production: {
-		connectionString:
-			process.env.REDIS_PROD_CONNECTION_STRING || "rediss://red-cpnqub08fa8c73b5udag:6379",
+		connectionString: process.env.REDIS_PROD_CONNECTION_STRING,
 	},
 	development: {
 		connectionString: process.env.REDIS_STAGING_CONNECTION_STRING || "redis://127.0.0.1:6379",

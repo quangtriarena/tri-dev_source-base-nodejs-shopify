@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
 import AdminRoutes from "./routes/index.js";
-import redisClient from "./configs/redisConfig.js";
+// import redisClient from "./configs/redisConfig.js";
 import { morganMiddleware } from "./utils/morganMiddleware.js";
 import path from "path";
 import "./configs/databaseConfig.js";
@@ -15,13 +15,13 @@ const PORT = process.env.SERVER_PORT || 3333;
 const app = express();
 
 //#region [test redis]
-redisClient.set("test-redis", "Redis online ne !!!", (err, reply) => {
-	if (err) {
-		console.error("Redis connection error:", err);
-	} else {
-		console.log("Redis connected successfully. Test key set:", reply);
-	}
-});
+// redisClient.set("test-redis", "Redis online ne !!!", (err, reply) => {
+// 	if (err) {
+// 		console.error("Redis connection error:", err);
+// 	} else {
+// 		console.log("Redis connected successfully. Test key set:", reply);
+// 	}
+// });
 //#endregion
 
 app.use("/static", express.static(path.join(process.cwd(), "public")));
