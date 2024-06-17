@@ -1,19 +1,19 @@
-// config/redisConfig.js
 import Redis from "ioredis";
 
-const redisHost = process.env.REDIS_HOST || "127.0.0.1";
-const redisPort = process.env.REDIS_PORT || 6379;
-const redisPassword = process.env.REDIS_PASSWORD || null;
-const redisDb = process.env.REDIS_DB || 0;
+const redisConfig = {
+	production: {
+		connectionString:
+			process.env.REDIS_PROD_CONNECTION_STRING || "rediss://red-cpnqub08fa8c73b5udag:6379",
+	},
+	development: {
+		connectionString: process.env.REDIS_STAGING_CONNECTION_STRING || "redis://127.0.0.1:6379",
+	},
+};
 
-const redisClient = new Redis({
-	host: redisHost,
-	port: redisPort,
-	password: redisPassword,
-	db: redisDb,
-});
+const environment = process.env.NODE_ENV || "development";
+const redisClient = new Redis(redisConfig[environment].connectionString);
 
-// Xử lý sự kiện kết nối và lỗi
+// Handle connection and error events
 redisClient.on("connect", () => {
 	console.log("Redis client connected");
 });
