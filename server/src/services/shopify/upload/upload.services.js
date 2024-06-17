@@ -218,6 +218,7 @@ const UploadServices = {
 						countTask--;
 
 						if (countTask === 0) {
+							console.log("upload multi success");
 							resolve({ message: "Upload success" });
 						}
 					}, i * 100);
