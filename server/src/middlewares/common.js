@@ -8,6 +8,10 @@ const MiddlewareCommons = {
             fs.mkdirSync(`${rootPath}/temps`)
         }
 
+        if (!fs.existsSync(`${rootPath}/fonts`)) {
+            fs.mkdirSync(`${rootPath}/fonts`)
+        }
+
         next()
     },
 }

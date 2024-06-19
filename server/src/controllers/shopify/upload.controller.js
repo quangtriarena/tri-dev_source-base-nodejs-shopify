@@ -36,6 +36,34 @@ const UploadControllers = {
             return ResponseHandler.error({ res, error, message: 'Upload error' })
         }
     },
+
+    singleFont: async (req, res) => {
+        try {
+            const font = req.file
+
+            const _result = await UploadServices.singleFont(font)
+            console.log('_result', _result)
+
+            return ResponseHandler.success({ res, data: _result, message: 'Upload font success' })
+        } catch (error) {
+            console.log('UploadControllers single font error', error)
+            return ResponseHandler.error({ res, error, message: 'Upload font error' })
+        }
+    },
+
+    multiFonts: async (req, res) => {
+        try {
+            const fonts = req.files
+
+            const _result = await UploadServices.multiFonts(fonts)
+            console.log('_result', _result)
+
+            return ResponseHandler.success({ res, data: _result, message: 'Upload fonts success' })
+        } catch (error) {
+            console.log('UploadControllers multi font error', error)
+            return ResponseHandler.error({ res, error, message: 'Upload error' })
+        }
+    },
 }
 
 export default UploadControllers
