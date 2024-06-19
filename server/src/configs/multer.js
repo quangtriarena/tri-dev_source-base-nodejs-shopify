@@ -20,7 +20,7 @@ const storageFont = multer.diskStorage({
 })
 
 //#region [file filter with font]
-const fileFilter = (req, file, cb) => {
+const fileFilterFont = (req, file, cb) => {
     // Kiểm tra loại file (ví dụ: chỉ cho phép các file có đuôi .ttf và .otf)
     if (
         file.mimetype === 'font/ttf' ||
@@ -36,13 +36,31 @@ const fileFilter = (req, file, cb) => {
 //#endregion
 
 //#region [file filter with image]
+const fileFilterImage = (req, file, cb) => {
+    // Kiểm tra loại file (ví dụ: chỉ cho phép các file có đuôi .jpeg và .png)
+    if (
+        file.mimetype === 'image/jpeg' ||
+        file.mimetype === 'image/png' ||
+        file.mimetype === 'image/gif' ||
+        file.mimetype === 'image/webp' ||
+        file.minetype === 'image/jpg'
+    ) {
+        cb(null, true)
+    } else {
+        cb(new Error('Only .jpeg, .png, .gif, .webp, .jpg and .png files are allowed'), false)
+    }
+}
 //#endregion
 
-const uploadImage = multer({ storage: storageImage })
+const uploadImage = multer({
+    storage: storageImage,
+    limits: { fileSize: 1024 * 1024 * 10 },
+    fileFilter: fileFilterImage,
+})
 const uploadFont = multer({
     storage: storageFont,
     limits: { fileSize: 1024 * 1024 * 10 },
-    fileFilter: fileFilter,
+    fileFilter: fileFilterFont,
 })
 
 export default {

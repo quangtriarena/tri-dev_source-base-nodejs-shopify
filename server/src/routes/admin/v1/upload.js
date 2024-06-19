@@ -1,8 +1,6 @@
 import express from 'express'
-import uploadMiddleware from '../../../configs/multer.js'
 import UploadControllers from '../../../controllers/shopify/upload.controller.js'
 import MiddlewareCommons from '../../../middlewares/common.js'
-import multer from 'multer'
 import ValidateMulter from '../../../middlewares/validateMulter.js'
 
 const router = express.Router()
@@ -10,14 +8,14 @@ const router = express.Router()
 router.post(
     '/single',
     MiddlewareCommons.checkFolderExist,
-    uploadMiddleware.withImage.single('files'),
+    ValidateMulter.image.single,
     UploadControllers.single
 )
 
 router.post(
     '/multi',
     MiddlewareCommons.checkFolderExist,
-    uploadMiddleware.withImage.array('files'),
+    ValidateMulter.image.multi,
     UploadControllers.multi
 )
 

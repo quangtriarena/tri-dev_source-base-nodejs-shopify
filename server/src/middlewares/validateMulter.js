@@ -18,6 +18,7 @@ const ValidateMulter = {
                 next()
             })
         },
+
         multi: (req, res, next) => {
             uploadMiddleware.withFont.array('fonts')(req, res, (err) => {
                 if (err instanceof multer.MulterError) {
@@ -26,8 +27,9 @@ const ValidateMulter = {
                     return res.status(400).json({ error: 'Upload error', message: err.message })
                 }
 
-                if (!req.files.length) {
-                    return res.status(400).json({ error: 'No file uploaded' })
+                // Kiểm tra nếu không có file nào được upload
+                if (!req.files || req.files.length === 0) {
+                    return res.status(400).json({ error: 'No file fonts uploaded' })
                 }
 
                 next()
@@ -35,8 +37,39 @@ const ValidateMulter = {
         },
     },
 
-    image: (req, res, next) => {
-        // Add your image validation logic here
+    image: {
+        single: (req, res, next) => {
+            uploadMiddleware.withImage.single('files')(req, res, (err) => {
+                if (err instanceof multer.MulterError) {
+                    return res.status(400).json({ error: 'Multer error', message: err.message })
+                } else if (err) {
+                    return res.status(400).json({ error: 'Upload error', message: err.message })
+                }
+
+                if (!req.file) {
+                    return res.status(400).json({ error: 'No file image uploaded' })
+                }
+
+                next()
+            })
+        },
+
+        multi: (req, res, next) => {
+            uploadMiddleware.withImage.array('files')(req, res, (err) => {
+                if (err instanceof multer.MulterError) {
+                    return res.status(400).json({ error: 'Multer error', message: err.message })
+                } else if (err) {
+                    return res.status(400).json({ error: 'Upload error', message: err.message })
+                }
+
+                // Kiểm tra nếu không có file nào được upload
+                if (!req.files || req.files.length === 0) {
+                    return res.status(400).json({ error: 'No file images uploaded' })
+                }
+
+                next()
+            })
+        },
     },
 }
 

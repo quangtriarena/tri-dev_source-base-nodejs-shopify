@@ -2,7 +2,7 @@ import axios from 'axios'
 import dotenv from 'dotenv'
 dotenv.config()
 
-// default method: POST => only use graphql query shopify
+// default method: POST => only use graphql query shopify, don't use REST API
 const axiosServer = axios.create({
     baseURL: `${process.env.SHOP}/admin/api/${process.env.API_VERSION}/graphql.json`,
     method: 'POST',

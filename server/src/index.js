@@ -1,4 +1,3 @@
-import bodyParser from 'body-parser'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
@@ -9,13 +8,13 @@ import './models/index.js'
 import ROUTER from './routes/index.js'
 import { morganMiddleware } from './utils/morganMiddleware.js'
 
+const PORT = process.env.PORT || 2222
+const app = express()
+
 //#region [Load the appropriate .env file based on NODE_ENV]
 const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development'
 dotenv.config({ path: envFile })
 //#endregion
-
-const PORT = process.env.PORT || 3333
-const app = express()
 
 //#region [test redis]
 redisClient.set('test-redis', 'Redis online ne !!!', (err, reply) => {
@@ -35,7 +34,8 @@ app.use(
         origin: '*',
     })
 )
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ limit: '50mb' }))
 //#endregion
 
 //#region [ROUTE TEST SERVER]
