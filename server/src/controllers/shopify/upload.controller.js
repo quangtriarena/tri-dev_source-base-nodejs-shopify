@@ -6,10 +6,6 @@ const UploadControllers = {
         try {
             const file = req.file
 
-            if (!file) {
-                return res.status(400).send('No file uploaded.')
-            }
-
             const _result = await UploadServices.single(file)
 
             return ResponseHandler.success({ res, data: _result, message: 'Upload success' })
@@ -22,10 +18,6 @@ const UploadControllers = {
     multi: async (req, res) => {
         try {
             const files = req.files
-
-            if (!files) {
-                return res.status(400).send('No file uploaded.')
-            }
 
             const _result = await UploadServices.multi(files)
             console.log('_result', _result)
