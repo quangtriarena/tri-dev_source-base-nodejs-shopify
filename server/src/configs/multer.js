@@ -54,12 +54,12 @@ const fileFilterImage = (req, file, cb) => {
 
 const uploadImage = multer({
     storage: storageImage,
-    limits: { fileSize: 1024 * 1024 * 10 },
+    limits: { fileSize: 1024 * 1024 * 20 },
     fileFilter: fileFilterImage,
 })
 const uploadFont = multer({
     storage: storageFont,
-    limits: { fileSize: 1024 * 1024 * 10 },
+    limits: { fileSize: 1024 * 1024 * 20 },
     fileFilter: fileFilterFont,
 })
 
