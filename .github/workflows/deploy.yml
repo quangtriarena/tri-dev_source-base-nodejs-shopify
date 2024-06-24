@@ -26,7 +26,7 @@ jobs:
               env:
                   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
                   USER: root
-                  HOST: ${{ HOST }}
+                  HOST: "HOST"
                   DEST: /var/www/node-test/server
               run: |
                   mkdir -p ~/.ssh
