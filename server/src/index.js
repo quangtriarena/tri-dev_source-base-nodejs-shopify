@@ -40,7 +40,7 @@ app.use(express.json({ limit: '50mb' }))
 
 //#region [ROUTE TEST SERVER]
 app.get('/', (req, res) => {
-    res.send('test cicd nè, oki chưa')
+    res.send('lại nè !!!')
 })
 //#endregion
 
