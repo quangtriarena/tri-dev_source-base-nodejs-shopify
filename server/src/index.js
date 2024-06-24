@@ -7,6 +7,7 @@ import redisClient from './configs/redisConfig.js'
 import './models/index.js'
 import ROUTER from './routes/index.js'
 import { morganMiddleware } from './utils/morganMiddleware.js'
+import compression from 'compression'
 
 const PORT = process.env.PORT || 2222
 const app = express()
@@ -36,11 +37,12 @@ app.use(
 )
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json({ limit: '50mb' }))
+app.use(compression())
 //#endregion
 
 //#region [ROUTE TEST SERVER]
 app.get('/', (req, res) => {
-    res.send('Hello World!')
+    res.send('test cicd nè')
 })
 //#endregion
 

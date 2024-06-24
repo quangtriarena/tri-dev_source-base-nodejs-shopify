@@ -26,4 +26,4 @@ jobs:
 
             - name: Deploy code
               run: |
-                  ssh -i ~/.ssh/id_rsa root@${{ secrets.HOST }} "cd /var/www/node-test/server && git pull origin master"  # Command để pull code từ repository trên server
+                  ssh -i ~/.ssh/id_rsa root@${{ secrets.HOST }} "cd /var/www/node-test/server && git pull origin master" && pm2 restart all # Command để pull code từ repository trên server
