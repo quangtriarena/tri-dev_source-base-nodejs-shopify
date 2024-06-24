@@ -11,13 +11,10 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
-
-            - name: Clear Cache
-              run: sudo npm cache clean -f
+              uses: actions/checkout@v4 # Cập nhật phiên bản mới nhất
 
             - name: Set up Node.js
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v3 # Cập nhật phiên bản mới nhất
               with:
                   node-version: "20"
 
