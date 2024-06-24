@@ -10,20 +10,6 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            # không cần install vì chỉ cần deploy code do cái này đưa code lên server
-
-            # - name: Checkout code
-            #   uses: actions/checkout@v4
-
-            # - name: Set up Node.js
-            #   uses: actions/setup-node@v4
-            #   with:
-            #       node-version: "20"
-
-            # - name: Install dependencies
-            #   run: npm install
-            #   working-directory: server
-
             - name: Install ssh key
               run: |
                   echo "${{ secrets.SSH_PRIVATE_KEY}}"" > ~/.ssh/id_rsa
