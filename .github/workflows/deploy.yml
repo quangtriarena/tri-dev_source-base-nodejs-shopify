@@ -1,18 +1,29 @@
-name: Deploy Node.js App
+name: SSH Deploy
 
 on:
     push:
         branches:
-            - master
+            - master # Cấu hình workflow được kích hoạt khi push code lên branch master
 
 jobs:
     deploy:
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-latest # Chọn một runner phù hợp với công việc của bạn
 
         steps:
-            - name: Install ssh key
-              run: |
-                  echo "${{ secrets.SSH_PRIVATE_KEY}}"" > ~/.ssh/id_rsa
-                  ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+            - name: Checkout code
+              uses: actions/checkout@v4 # Sử dụng action để checkout code từ repository
 
-            - name: Connect server and pull code
+            - name: Install SSH client
+              run: sudo apt-get install openssh-client -y # Cài đặt SSH client trên runner
+
+            - name: Setup SSH key
+              run: |
+                  mkdir -p ~/.ssh
+                  echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+                  chmod 600 ~/.ssh/id_rsa
+                  ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+                  chmod 644 ~/.ssh/known_hosts
+
+            - name: Deploy code
+              run: |
+                  ssh -i ~/.ssh/id_rsa root@${{ secrets.HOST }} "cd /var/www/node-test/server && git pull origin master"  # Command để pull code từ repository trên server
