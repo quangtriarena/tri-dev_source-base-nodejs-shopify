@@ -18,16 +18,17 @@ jobs:
               with:
                   node-version: "20"
 
-            - name: Install dependencies
-              run: npm install
-              working-directory: server
+            # không cần install vì chỉ cần deploy code do cái này đưa code lên server
+            # - name: Install dependencies
+            #   run: npm install
+            #   working-directory: server
 
             - name: Deploy to Server
               env:
                   env:
                       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-                      USER: root
-                      HOST: "HOST"
+                      USER: ${{ secrets.USER }}
+                      HOST: ${{ secrets.HOST }}
                       DEST: /var/www/node-test/server
               run: |
                   mkdir -p ~/.ssh
