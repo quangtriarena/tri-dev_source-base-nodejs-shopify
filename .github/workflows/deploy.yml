@@ -13,10 +13,26 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v4 # Sử dụng action để checkout code từ repository
 
+            - name: Setup node
+              uses: actions/setup-node@v4 # Sử dụng action để setup nodejs
+              with: # Cấu hình phiên bản nodejs
+                  node-version: "20"
+
+            - name: Install PM2
+              run: npm install pm2 -g # Cài đặt PM2 global
+
+            - name: Install dependencies
+              run: npm install # Cài đặt các dependencies
+              working-directory: ./server
+
             - name: Install SSH client
               run: sudo apt-get install openssh-client -y # Cài đặt SSH client trên runner
 
             - name: Setup SSH key
+              env:
+                  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }} # Lấy SSH private key từ secrets
+                  HOST: ${{ secrets.HOST }} # Lấy host từ secrets
+                  USER: ${{ secrets.USER }} # Lấy user từ secrets
               run: |
                   mkdir -p ~/.ssh
                   echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
@@ -26,4 +42,4 @@ jobs:
 
             - name: Deploy code
               run: |
-                  ssh -i ~/.ssh/id_rsa root@${{ secrets.HOST }} "cd /var/www/node-test/server && git pull origin master" && pm2 restart all # Command để pull code từ repository trên server
+                  ssh -i ~/.ssh/id_rsa USER@HOST "cd /var/www/node-test/server && git pull origin master" && pm2 restart all # Command để pull code từ repository trên server

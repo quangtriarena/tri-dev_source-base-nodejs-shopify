@@ -42,7 +42,7 @@ app.use(compression())
 
 //#region [ROUTE TEST SERVER]
 app.get('/', (req, res) => {
-    res.send('test cicd nè')
+    res.send('test cicd nè, oki chưa')
 })
 //#endregion
 
