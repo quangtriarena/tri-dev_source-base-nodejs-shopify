@@ -10,43 +10,23 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-
-            - name: Set up Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "20"
-
             # không cần install vì chỉ cần deploy code do cái này đưa code lên server
+
+            # - name: Checkout code
+            #   uses: actions/checkout@v4
+
+            # - name: Set up Node.js
+            #   uses: actions/setup-node@v4
+            #   with:
+            #       node-version: "20"
+
             # - name: Install dependencies
             #   run: npm install
             #   working-directory: server
 
-            - name: Deploy to Server
-              env:
-                  env:
-                      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-                      USER: ${{ secrets.USER }}
-                      HOST: ${{ secrets.HOST }}
-                      DEST: /var/www/node-test/server
+            - name: Install ssh key
               run: |
-                  mkdir -p ~/.ssh
-                  echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-                  chmod 600 ~/.ssh/id_rsa
-                  echo "Host $HOST" >> ~/.ssh/config
-                  echo "  StrictHostKeyChecking no" >> ~/.ssh/config
-                  ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+                  echo "${{ secrets.SSH_PRIVATE_KEY}}"" > ~/.ssh/id_rsa
+                  ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-                  echo "Testing SSH connection..."
-                  ssh -i ~/.ssh/id_rsa $USER@$HOST "echo Connection successful"
-
-                  echo "Deploying application..."
-                  ssh -i ~/.ssh/id_rsa $USER@$HOST "
-                    cd $DEST && \
-                    git pull origin master && \
-                    npm install && \
-                    pm2 reload ecosystem.config.js --env production
-                  "
-
-                  echo "Deployment complete"
+            - name: Connect server and pull code
