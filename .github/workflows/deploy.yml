@@ -25,8 +25,8 @@ jobs:
             - name: Deploy to Server
               env:
                   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-                  USER: ${{ secrets.USER }}
-                  HOST: ${{ secrets.HOST }}
+                  USER: root
+                  HOST: ${{ HOST }}
                   DEST: /var/www/node-test/server
               run: |
                   mkdir -p ~/.ssh
