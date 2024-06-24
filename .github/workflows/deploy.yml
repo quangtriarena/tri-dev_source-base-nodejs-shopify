@@ -11,10 +11,10 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4 # Cập nhật phiên bản mới nhất
+              uses: actions/checkout@v4
 
             - name: Set up Node.js
-              uses: actions/setup-node@v4 # Cập nhật phiên bản mới nhất
+              uses: actions/setup-node@v4
               with:
                   node-version: "20"
 
@@ -34,10 +34,19 @@ jobs:
                   mkdir -p ~/.ssh
                   echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
                   chmod 600 ~/.ssh/id_rsa
+                  echo "Host $HOST" >> ~/.ssh/config
+                  echo "  StrictHostKeyChecking no" >> ~/.ssh/config
                   ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
-                  ssh $USER@$HOST "
+
+                  echo "Testing SSH connection..."
+                  ssh -i ~/.ssh/id_rsa $USER@$HOST "echo Connection successful"
+
+                  echo "Deploying application..."
+                  ssh -i ~/.ssh/id_rsa $USER@$HOST "
                     cd $DEST && \
                     git pull origin master && \
                     npm install && \
                     pm2 reload ecosystem.config.js --env production
                   "
+
+                  echo "Deployment complete"
