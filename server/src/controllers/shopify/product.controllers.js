@@ -1,3 +1,5 @@
+import ProductServices from '../../services/shopify/product/product.services.js'
+
 const Controllers = {
     findAll: async (req, res) => {
         try {
@@ -5,34 +7,46 @@ const Controllers = {
             console.log(error)
         }
     },
+
     findById: async (req, res) => {
         try {
         } catch (error) {
             console.log(error)
         }
     },
+
     create: async (req, res) => {
         try {
         } catch (error) {
             console.log(error)
         }
     },
+
     update: async (req, res) => {
         try {
         } catch (error) {
             console.log(error)
         }
     },
+
     _delete: async (req, res) => {
         try {
         } catch (error) {
             console.log(error)
         }
     },
-    bulkCreate: async (req, res) => {
+
+    bulkCreated: async (req, res) => {
         try {
             // body gửi lên kèm theo số lượng
-            // vd: max = 100
+            // vd: size = 100
+            const { size } = req.query
+
+            const data = await ProductServices.bulkCreated(size)
+
+            return res.status(200).json({
+                message: 'Add job success',
+            })
         } catch (error) {
             console.log(error)
         }

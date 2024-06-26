@@ -18,6 +18,10 @@ const QueueModel = sequelize.define('Queue', {
         type: DataTypes.STRING,
     },
 
+    jobName: {
+        type: DataTypes.STRING,
+    },
+
     status: {
         type: DataTypes.ENUM,
         values: ['pending', 'processing', 'completed', 'failed'],

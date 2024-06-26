@@ -29,7 +29,12 @@ axiosServer.interceptors.response.use(
         return response.data
     },
     function (error) {
-        console.log('axios interceptors response error >>>>', error)
+        if (axios.isAxiosError(error)) {
+            console.error('Response error details:', error.toJSON())
+        } else {
+            console.error('Other error:', error)
+        }
+
         throw error
     }
 )
