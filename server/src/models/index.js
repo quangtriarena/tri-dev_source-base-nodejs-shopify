@@ -7,7 +7,7 @@ Object.keys(EntryModels).forEach((model) => {
     const _model = EntryModels[model]
 
     _model
-        .sync({ force: true })
+        .sync()
         .then(() => {
             console.log(`👌 ${model} table created successfully`)
         })
