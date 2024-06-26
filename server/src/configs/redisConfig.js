@@ -10,7 +10,10 @@ const redisConfig = {
 }
 
 const environment = process.env.NODE_ENV || 'development'
-const redisClient = new Redis(redisConfig[environment].connectionString)
+
+const redisClient = new Redis(redisConfig[environment].connectionString, {
+    maxRetriesPerRequest: null,
+})
 
 // Handle connection and error events
 redisClient.on('connect', () => {

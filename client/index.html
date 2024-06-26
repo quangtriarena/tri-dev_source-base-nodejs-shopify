@@ -22,9 +22,23 @@
 				required />
 
 			<button type="button">Submit</button>
+
+			<div>---------------------------------------------</div>
+
+			<button id="bgj">Add 10 job to queue</button>
 		</form>
 
 		<script>
+			const buttonEl = document.getElementById("bgj");
+			buttonEl.addEventListener("click", async (e) => {
+				e.preventDefault();
+
+				const response = await fetch("http://localhost:7001/app/learn?size=4");
+				const data = response.json();
+
+				console.log("data", data);
+			});
+
 			document
 				.querySelector("#uploadForm button")
 				.addEventListener("click", function (event) {

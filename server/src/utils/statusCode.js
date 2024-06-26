@@ -1,4 +1,4 @@
-const statusCodes = {
+const STATUS_CODE = {
     // Lỗi chung
     genericError: 500,
     notFound: 404,
@@ -19,4 +19,4 @@ const statusCodes = {
     // ... (Thêm mã trạng thái lỗi và mô tả cho các trường hợp cụ thể trong ứng dụng của bạn)
 }
 
-export default statusCodes
+export default STATUS_CODE
