@@ -1,18 +1,23 @@
 import multer from 'multer'
 import uploadMiddleware from '../configs/multer.js'
+import STATUS_CODE from '../utils/statusCode.js'
 
 const ValidateMulter = {
     font: {
         single: (req, res, next) => {
             uploadMiddleware.withFont.single('fonts')(req, res, (err) => {
                 if (err instanceof multer.MulterError) {
-                    return res.status(400).json({ error: 'Multer error', message: err.message })
+                    return res
+                        .status(STATUS_CODE.badRequest)
+                        .json({ error: 'Multer error', message: err.message })
                 } else if (err) {
-                    return res.status(400).json({ error: 'Upload error', message: err.message })
+                    return res
+                        .status(STATUS_CODE.badRequest)
+                        .json({ error: 'Upload error', message: err.message })
                 }
 
                 if (!req.file) {
-                    return res.status(400).json({ error: 'No file uploaded' })
+                    return res.status(STATUS_CODE.badRequest).json({ error: 'No file uploaded' })
                 }
 
                 next()
@@ -22,14 +27,20 @@ const ValidateMulter = {
         multi: (req, res, next) => {
             uploadMiddleware.withFont.array('fonts')(req, res, (err) => {
                 if (err instanceof multer.MulterError) {
-                    return res.status(400).json({ error: 'Multer error', message: err.message })
+                    return res
+                        .status(STATUS_CODE.badRequest)
+                        .json({ error: 'Multer error', message: err.message })
                 } else if (err) {
-                    return res.status(400).json({ error: 'Upload error', message: err.message })
+                    return res
+                        .status(STATUS_CODE.badRequest)
+                        .json({ error: 'Upload error', message: err.message })
                 }
 
                 // Kiểm tra nếu không có file nào được upload
                 if (!req.files || req.files.length === 0) {
-                    return res.status(400).json({ error: 'No file fonts uploaded' })
+                    return res
+                        .status(STATUS_CODE.badRequest)
+                        .json({ error: 'No file fonts uploaded' })
                 }
 
                 next()
@@ -41,13 +52,19 @@ const ValidateMulter = {
         single: (req, res, next) => {
             uploadMiddleware.withImage.single('files')(req, res, (err) => {
                 if (err instanceof multer.MulterError) {
-                    return res.status(400).json({ error: 'Multer error', message: err.message })
+                    return res
+                        .status(STATUS_CODE.badRequest)
+                        .json({ error: 'Multer error', message: err.message })
                 } else if (err) {
-                    return res.status(400).json({ error: 'Upload error', message: err.message })
+                    return res
+                        .status(STATUS_CODE.badRequest)
+                        .json({ error: 'Upload error', message: err.message })
                 }
 
                 if (!req.file) {
-                    return res.status(400).json({ error: 'No file image uploaded' })
+                    return res
+                        .status(STATUS_CODE.badRequest)
+                        .json({ error: 'No file image uploaded' })
                 }
 
                 next()
@@ -57,14 +74,20 @@ const ValidateMulter = {
         multi: (req, res, next) => {
             uploadMiddleware.withImage.array('files')(req, res, (err) => {
                 if (err instanceof multer.MulterError) {
-                    return res.status(400).json({ error: 'Multer error', message: err.message })
+                    return res
+                        .status(STATUS_CODE.badRequest)
+                        .json({ error: 'Multer error', message: err.message })
                 } else if (err) {
-                    return res.status(400).json({ error: 'Upload error', message: err.message })
+                    return res
+                        .status(STATUS_CODE.badRequest)
+                        .json({ error: 'Upload error', message: err.message })
                 }
 
                 // Kiểm tra nếu không có file nào được upload
                 if (!req.files || req.files.length === 0) {
-                    return res.status(400).json({ error: 'No file images uploaded' })
+                    return res
+                        .status(STATUS_CODE.badRequest)
+                        .json({ error: 'No file images uploaded' })
                 }
 
                 next()

@@ -1,18 +1,19 @@
 import { createBullBoard } from '@bull-board/api'
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter.js'
 import { ExpressAdapter } from '@bull-board/express'
-import './background-job/index.js'
 import compression from 'compression'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import path from 'path'
 import products from './background-job/products/producers/product.queue.js'
-import './configs/databaseConfig.js'
 import redisClient from './configs/redisConfig.js'
-import './models/index.js'
-import ROUTER from './routes/index.js'
 import { morganMiddleware } from './utils/morganMiddleware.js'
+import ROUTER from './routes/index.js'
+
+import './background-job/index.js'
+import './configs/databaseConfig.js'
+import './models/index.js'
 
 const PORT = process.env.PORT || 2222
 const app = express()
