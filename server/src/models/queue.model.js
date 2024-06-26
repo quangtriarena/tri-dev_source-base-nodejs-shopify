@@ -3,23 +3,25 @@ import instancePostgresDB from '../configs/databaseConfig.js'
 
 const { sequelize } = instancePostgresDB
 
-const ProductModel = sequelize.define('Product', {
+const QueueModel = sequelize.define('Queue', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
-    name: {
+
+    queueId: {
         type: DataTypes.STRING,
-        allowNull: false,
     },
-    price: {
-        type: DataTypes.FLOAT,
+
+    queueName: {
+        type: DataTypes.STRING,
     },
-    description: {
-        type: DataTypes.TEXT,
+
+    status: {
+        type: DataTypes.ENUM,
+        values: ['pending', 'processing', 'completed', 'failed'],
     },
-    // Add more fields as needed
 })
 
-export default ProductModel
+export default QueueModel

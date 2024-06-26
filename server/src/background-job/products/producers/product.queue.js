@@ -6,7 +6,7 @@ const queue = new Queue('products', { connection: redisConfig })
 const productQueue = {
     async addJob(data) {
         try {
-            return await queue.add('products/create', data, { delay: 0 })
+            return await queue.add('products/create', data, { delay: 500 })
         } catch (error) {
             throw error
         }

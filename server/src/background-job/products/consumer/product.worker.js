@@ -14,24 +14,26 @@ const worker = new Worker(
 )
 
 worker.on('ready', async (job) => {
-    console.log('worker is running')
+    console.log('----------------- WORKER IS READY -----------------')
 })
 
 worker.on('active', async (job) => {
-    console.log('worker is active')
+    console.log('----------------- WORKER IS ACTIVE -----------------')
 })
 
 worker.on('completed', async () => {
-    console.log('worker is completed')
+    console.log('----------------- WORKER IS COMPLETED -----------------')
 })
 
 worker.on('failed', (job, err) => {
     console.log('Job failed:', job.data)
+    console.log('----------------- WORKER IS FAILED -----------------')
     console.error(err)
 })
 
 worker.on('progress', async (job, progress) => {
     console.log('job', job)
+    console.log('----------------- WORKER IS PROGRESS -----------------')
     console.log('Job progress:', progress)
 })
 
