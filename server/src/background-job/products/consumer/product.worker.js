@@ -29,9 +29,11 @@ const worker = new Worker(
                             .then((_res) => {
                                 countTask--
 
+                                //#region [SOCKET.IO EVENT UPDATE PROGRESS ON CLIENT]
                                 socketIO.getSocketIOInstance((_io) => {
                                     _io.emit('job-progress', { jobId: job.id, progress })
                                 })
+                                //#endregion
                             })
                             .catch((_err) => {
                                 arrayFail.push(item)

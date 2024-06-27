@@ -32,8 +32,6 @@ class SocketIO {
     }
 
     getSocketIOInstance = (_callback) => {
-        console.log('_callback', _callback)
-
         if (!this.io) {
             this.callback = _callback
         } else {
