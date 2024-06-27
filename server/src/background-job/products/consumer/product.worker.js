@@ -2,6 +2,7 @@ import { Worker } from 'bullmq'
 import redisConfig from '../../../configs/redisConfig.js'
 import ProductMiddleware from '../../../middlewares/product.js'
 import EntryModels from '../../../models/index.js'
+import socketIO from '../../../configs/socketioConfig.js'
 
 const worker = new Worker(
     'products',
@@ -11,6 +12,8 @@ const worker = new Worker(
 
             let arrayFail = []
 
+            const TOTAL_STEP = data.data.length
+
             let result = await new Promise((resolve, reject) => {
                 let countTask = data.data.length
 
@@ -18,11 +21,17 @@ const worker = new Worker(
                     let item = data.data[i]
 
                     setTimeout(() => {
-                        job.updateProgress((i * 100) / data.data.length)
+                        const progress = Math.trunc((i * 100) / TOTAL_STEP)
+
+                        job.updateProgress(progress)
 
                         ProductMiddleware.create(item)
                             .then((_res) => {
                                 countTask--
+
+                                socketIO.getSocketIOInstance((_io) => {
+                                    _io.emit('job-progress', { jobId: job.id, progress })
+                                })
                             })
                             .catch((_err) => {
                                 arrayFail.push(item)

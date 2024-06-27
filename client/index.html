@@ -6,6 +6,11 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0" />
 		<title>Upload Image</title>
+
+		<script
+			src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+			integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+			crossorigin="anonymous"></script>
 	</head>
 	<body>
 		<h1>Upload Image</h1>
@@ -26,17 +31,44 @@
 			<div>---------------------------------------------</div>
 
 			<button id="bgj">Add 10 job to queue</button>
+
+			<div>---------------------------------------------</div>
+
+			<div id="progress">Progress: 0%</div>
 		</form>
 
 		<script>
+			const socket = io("http://localhost:7799");
+
+			socket.on("connect", () => {
+				console.log("Connected to server");
+			});
+
+			socket.on("job-progress", (data) => {
+				console.log(`Job ${data.jobId} progress: ${data.progress}%`);
+				document.getElementById("progress").innerText = `Progress: ${data.progress}%`;
+			});
+
+			socket.on("job-completed", (data) => {
+				console.log(`Job ${data.jobId} completed`);
+			});
+
+			socket.on("job-failed", (data) => {
+				console.error(`Job ${data.jobId} failed: ${data.error}`);
+			});
+
+			socket.on("disconnect", () => {
+				console.log("Disconnected from server");
+			});
+
 			const buttonEl = document.getElementById("bgj");
 			buttonEl.addEventListener("click", async (e) => {
 				e.preventDefault();
 
-				const response = await fetch("http://localhost:7001/app/learn?size=4");
+				const response = await fetch(
+					"http://localhost:7799/app/admin/v1/products/bulk-created?size=100"
+				);
 				const data = response.json();
-
-				console.log("data", data);
 			});
 
 			document

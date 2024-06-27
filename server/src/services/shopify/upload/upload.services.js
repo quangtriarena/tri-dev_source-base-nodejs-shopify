@@ -4,6 +4,10 @@ import fs from 'fs'
 import AxiosServer from '../../../configs/axiosConfig.js'
 
 const UploadServices = {
+    findAllFileUpload: async () => {},
+
+    findById: async (req, res) => {},
+
     single: async (file) => {
         try {
             const queryStagedUploadsCreate = {
