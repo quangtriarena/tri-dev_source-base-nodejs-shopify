@@ -69,7 +69,7 @@ const UploadServices = {
             })
             //#endregion
 
-            const resourceUrl = stageTarget.resourceUrl
+            const resourceUrl = stageTarget.resourceUrls
 
             //#region [step 3: upload to shopify]
             const queryFileCreate = {

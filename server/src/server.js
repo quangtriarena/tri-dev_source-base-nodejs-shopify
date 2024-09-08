@@ -7,10 +7,11 @@ import startAllWorkers from './background-job/index.js'
 import products from './background-job/products/producers/product.queue.js'
 import socketIO from './configs/socketioConfig.js'
 import app from './index.js'
+
 const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development'
 dotenv.config({ path: envFile })
 
-const PORT = process.env.PORT || 2222
+const PORT = process.env.PORT || 3000
 
 const server = createServer(app)
 const io = socketIO.init(server)

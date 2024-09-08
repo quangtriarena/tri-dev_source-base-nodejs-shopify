@@ -9,7 +9,9 @@
         "build": "npm run clean && npm run build-babel",
         "dev": "cross-env NODE_ENV=development nodemon --signal SIGINT ./node_modules/.bin/babel-node ./src/server.js",
         "serve": "cross-env NODE_ENV=production node ./src/server.js",
-        "prettier:format": "prettier --write \"./src/**/*.js\""
+        "prettier:format": "prettier --write \"./src/**/*.js\"",
+        "pm2:prod": "pm2 kill && pm2 start ecosystem.config.cjs --env production",
+        "pm2:dev": "pm2 kill && pm2 start ecosystem.config.cjs --env development"
     },
     "keywords": [],
     "author": "",
@@ -30,6 +32,7 @@
         "@bull-board/api": "^5.20.4",
         "@bull-board/express": "^5.20.4",
         "@bull-board/ui": "^5.20.4",
+        "@faker-js/faker": "^8.4.1",
         "axios": "^1.6.8",
         "bcrypt": "^5.1.1",
         "bullmq": "^5.7.15",

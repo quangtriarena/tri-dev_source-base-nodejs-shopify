@@ -15,7 +15,6 @@ const app = express()
 //#region [LOAD THE SUITABLE .env FILE BASED ON NODE_ENV]
 const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development'
 dotenv.config({ path: envFile })
-
 //#endregion
 
 //#region [TEST REDIS]
@@ -43,13 +42,12 @@ app.use(compression())
 
 //#region [ROUTE TEST SERVER]
 app.get('/', (req, res) => {
-    res.send('đã update mới !!!')
+    res.send('đã update mới !!! ádsadda')
 })
 //#endregion
 
 //#region [ROUTES]
 app.use('/app/admin', ROUTER.AdminRoutes)
-app.use('/app/external', ROUTER.ExternalRoutes)
 app.use('/app/learn', ROUTER.LearnRoutes)
 
 //#endregion
